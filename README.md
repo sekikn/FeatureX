@@ -9,6 +9,7 @@ Python library for extracting feature models from natural language specification
 * nltk
 * Pattern
 * PdfMiner
+* pydot
 * scikit-learn
 
 **External tools used**
@@ -23,3 +24,8 @@ Feature-IDE : https://marketplace.eclipse.org/content/featureide
 ## Try it out ##
 
 Start with the src/CaseStudy-Evaluations.py file for running through an example and see the results.
+
+```
+$ cd examples
+$ python3 ../src/CaseStudy-Evaluations.py
+```

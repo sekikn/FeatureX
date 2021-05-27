@@ -3,8 +3,8 @@ import FeatureX
 import time
 
 from FeatureX import *
-from RelMiner import RelashionshipMiner
-from MLRel import MachineLearnRelations
+from RelationshipMiner import RelashionshipMiner
+from RelationshipSegregator import RelationshipSegregator
 
 start_time = time.time()
 
@@ -51,4 +51,4 @@ RelationshipSegregator()
 # Move all results
 fx.clean_workspace()
 
-print "--- %s seconds ---" % (time.time() - start_time)
+print("--- %s seconds ---" % (time.time() - start_time))

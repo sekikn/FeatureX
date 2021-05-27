@@ -11,6 +11,7 @@ import os, datetime
 import shutil, glob
 import math
 
+from functools import reduce
 from nltk.tokenize import word_tokenize
 from nltk.text import TextCollection
 from nltk.tokenize import sent_tokenize
@@ -25,7 +26,7 @@ from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
 from pdfminer.pdfpage import PDFPage
-from cStringIO import StringIO
+from io import StringIO
 from sklearn.feature_extraction.text import TfidfVectorizer
 import datetime
 
@@ -47,8 +48,8 @@ class featurex:
             retstr = StringIO()
             codec = 'utf-8'
             laparams = LAParams()
-            device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
-            fp = file(self.filepath, 'rb')
+            device = TextConverter(rsrcmgr, retstr, laparams=laparams)
+            fp = open(self.filepath, 'rb')
             interpreter = PDFPageInterpreter(rsrcmgr, device)
             password = ""
             maxpages = 0
@@ -245,11 +246,11 @@ class featurex:
         if not os.path.exists('SubjectObject.txt'):
             sentences = sent_tokenize(self.complete_processed_corpus)
             orig_stdout = sys.stdout
-            f = file('SubjectObject.txt', 'a')
+            f = open('SubjectObject.txt', 'a')
             sys.stdout = f
             for sent in sentences:
                 datas = parse(sent, relations=True, lemmata=True)
-                print pprint(datas)
+                print(pprint(datas))
             sys.stdout = orig_stdout
             f.close()   
                      
@@ -374,10 +375,10 @@ class featurex:
                 g.add_edge(n1, n2, weight=0.0, type='is-related-to')
         g.export('FeatureRelations', directed=True)
         orig_stdout = sys.stdout
-        gn = file('GraphNodeWeights.txt', 'a')
+        gn = open('GraphNodeWeights.txt', 'a')
         sys.stdout = gn
         for n in sorted(g.nodes, key=lambda n: n.weight):
-             print '%.2f' % n.weight, n
+             print('%.2f' % n.weight, n)
         sys.stdout = orig_stdout
         gn.close() 
 

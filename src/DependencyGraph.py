@@ -5,7 +5,7 @@ import itertools
 import networkx as nx
 import matplotlib.pyplot as plt
 
-from itertools import izip, islice
+from itertools import islice
 from networkx.algorithms.distance_measures import center
     
 class dependencygraph:
@@ -48,17 +48,17 @@ class dependencygraph:
         NonRelations = []
 
         for arr in R2arr:
-            r = filter(None, arr.split('->'))
-            for current_item, next_item in izip(r, islice(r, 1, None)):
+            r = arr.split('->')
+            for current_item, next_item in zip(r, islice(r, 1, None)):
                 NonRelations.append((current_item, next_item))
                 NonRelations.append((next_item, current_item))
         print('DONE R2')
 
         for arr in R1arr:
-            r = filter(None, arr.split('->'))
+            r = arr.split('->')
             if r and r[0] != '' and rootFeature in r[0]:
                 r[0] = rootFeature
-            for current_item, next_item in izip(r, islice(r, 1, None)):
+            for current_item, next_item in zip(r, islice(r, 1, None)):
                 if (current_item, next_item) not in NonRelations:
                     if not [(x,y) for x, y in Relations if y == current_item] and current_item != rootFeature and next_item != rootFeature:                        
                         Relations.append((rootFeature, current_item))
@@ -67,10 +67,10 @@ class dependencygraph:
         print('DONE R1')
 
         for arr in R3arr:
-            r = filter(None, arr.split('->'))
+            r = arr.split('->')
             if r and r[0] != '' and rootFeature in r[0]:
                 r[0] = rootFeature
-            for current_item, next_item in izip(r, islice(r, 1, None)):
+            for current_item, next_item in zip(r, islice(r, 1, None)):
                 if (current_item, next_item) not in NonRelations:
                     if not [(x,y) for x, y in Relations if y == current_item] and current_item != rootFeature and next_item != rootFeature:
                         Relations.append((rootFeature, current_item))                    
@@ -79,10 +79,10 @@ class dependencygraph:
         print('DONE R3')
 
         for arr in R4arr:
-            r = filter(None, arr.split('->'))
+            r = arr.split('->')
             if r and r[0] != '' and rootFeature in r[0]:
                 r[0] = rootFeature
-            for current_item, next_item in izip(r, islice(r, 1, None)):
+            for current_item, next_item in zip(r, islice(r, 1, None)):
                 if (current_item, next_item) not in NonRelations:
                     if not [(x,y) for x, y in Relations if y == current_item] and current_item != rootFeature and next_item != rootFeature:
                         Relations.append((rootFeature, current_item))

@@ -114,7 +114,7 @@ class RelashionshipMiner:
                             prePos = [words.index(v) for v in predeterminers]
                         else:
                             prePos = [-1]
-                        if featureTerms.count >= 2:   
+                        if len(featureTerms) >= 2:
                             positions = []                 
                             for f in featureTerms:
                                 firstword = f.split()[0]
@@ -209,4 +209,4 @@ class RelashionshipMiner:
                             R4 = []
             except Exception: 
                 traceback.print_exc()
-                pass 
+                pass
