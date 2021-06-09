@@ -108,32 +108,19 @@ class featurex:
 
             # select one root feature
             first_few_sentences  = []
-            next_few_sentences = []
-            last_few_sentences = []
             count = 0
             doc = []
             # Take the content of the first 2 pages of the document
             for sent in sent_tokenize(self.complete_processed_corpus):
-                if count < 10:
+                if count < 100:
                     first_few_sentences.append(sent)
                     count = count + 1
                 else:
-                    if count%5 >= 1:
-                        if len(last_few_sentences) > 0:
-                            doc.append(' '.join(last_few_sentences))
-                            last_few_sentences = []
-                        next_few_sentences.append(sent)
-                        count = count + 1
-                    else:
-                        if len(next_few_sentences) > 0:
-                            doc.append(' '.join(next_few_sentences))
-                            next_few_sentences = []
-                        last_few_sentences.append(sent)
-                        count = count + 1
+                    break
             
             subcorpus = ' '.join(first_few_sentences)           
             
-            mainfeature = nltk.FreqDist(word_tokenize(subcorpus)).most_common(10)
+            mainfeature = nltk.FreqDist(word_tokenize(subcorpus)).most_common(100)
             mainfeature = self.RemoveNonsenseWords(mainfeature)
             mainfeature = [w for w in mainfeature if w[0].lower() not in stopwords and w[0].lower() not in spaceandspecial]
             
@@ -157,15 +144,15 @@ class featurex:
             pass
             
     def clean_workspace(self):
-        src_dir = os.path.join(os.getcwd())
+        src_dir = os.getcwd()
         dest_dir = os.path.join(os.getcwd(), datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
         os.makedirs(dest_dir)
-        for txt_file in glob.glob(src_dir+"\\*.txt"):
+        for txt_file in glob.glob(os.path.join(src_dir, "*.txt")):
             if "NonsenseWords" not in txt_file:
                 shutil.move(txt_file, dest_dir)
-        for dot_file in glob.glob(src_dir+"\\*.dot"):
+        for dot_file in glob.glob(os.path.join(src_dir, "*.dot")):
             shutil.move(dot_file, dest_dir)
-        for png_file in glob.glob(src_dir+"\\*.png"):
+        for png_file in glob.glob(os.path.join(src_dir, "*.png")):
             shutil.move(png_file, dest_dir)
 
     def GetLastNoun(self):
@@ -339,7 +326,7 @@ class featurex:
                             # find the previous noun and replace
                             lastnoun = self.GetLastNoun()
                             for ww in t[0]:
-                                if nltk.pos_tag(ww) in ('DT','PRP','PRP$','PDT'):
+                                if nltk.pos_tag([ww]) in ('DT','PRP','PRP$','PDT'):
                                     t[0]=t[0]+lastnoun+' '
                                 else: t[0]=t[0]+ww+' '
                             self.CandidateTerms.append(t)
